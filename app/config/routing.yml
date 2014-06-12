@@ -1,0 +1,5 @@
+max_jobeet:
+    resource: "@MaxJobeetBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
