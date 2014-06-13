@@ -1,0 +1,55 @@
+{% extends "::base.html.twig" %}
+
+{% block stylesheets %}
+	{{parent()}}
+    {% stylesheets '@MaxJobeetBundle/Resources/public/css/*' filter='cssrewrite' %}
+    	<link rel="stylesheet" href="{{ asset_url }}" />
+	{% endstylesheets %}
+
+{% endblock %}
+
+{% block body %}
+            {% block nav %}
+                {% include "::nav.html.twig" %}
+            {% endblock %}
+            <div class="container">
+                
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                    <p class="bg-info">
+                       {{ flashMessage }}
+                   </p>
+                {% endfor %}
+
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <p class="bg-danger">
+                       {{ flashMessage }}
+                   </p>
+                {% endfor %}
+
+                {% block content %}{% endblock %}
+            </div>
+
+            {% block footer %}
+                <div id="footer">
+                    <div class="container">
+                        <ul class="list-inline">
+                           <li><a href="#">About Jobeet</a></li>
+                           <li class="feed"><a href="#">Full feed</a></li>
+                           <li><a href="#">Jobeet API</a></li>
+                           <li><a href="#">Affiliates</a></li>
+                        </ul>
+                        <ul class="list-inline">
+		                   <li class="text-muted">2012-{{"now"|date('Y')}} TM</li>
+		                   <li class="text-muted">powered by <a href="http://www.symfony.com/">Symfony</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+	{% javascripts '@MaxJobeetBundle/Resources/public/js/*' %}
+		{{parent()}}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

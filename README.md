@@ -23,12 +23,20 @@ Collect User Case
 
 ###Day3
 
-Entity
+Generate - Entity, Tables in DB, CRUD
 
 console|info 
 ---|---
-`php bin/console doctrine:database:create'|database create
+`php bin/console doctrine:database:create`|database create
 `php bin/console doctrine:generate:entities MaxJobeetBundle`|generate entities
 `php bin/console doctrine:schema:update --force`|create tables in database
 `php bin/console doctrine:fixtures:load`|load fixtures(doctrine/doctrine-fixtures-bundle)
 `php bin/console doctrine:generate:crud --entity=MaxJobeetBundle:Job --route-prefix=max_job --with-write --format=annotation`|generate crud
+
+###Day4
+
+View
+
+console|info 
+---|---
+`php bin/console assetic:dump`|assetic dump to web folder
