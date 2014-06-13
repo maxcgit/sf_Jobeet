@@ -21,18 +21,22 @@ class JobController extends Controller
     /**
      * Lists all Job entities.
      *
-     * @Route("/", name="max_job")
-     * @Method("GET")
-     * @Template()
+     * @Template
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MaxJobeetBundle:Job')->findAll();
-
+        $categories = $em->getRepository('MaxJobeetBundle:Category')->getWithJobs();
+        foreach($categories as $category) {
+            $category->setActiveJobs($em->getRepository('MaxJobeetBundle:Job')->getActiveJobs(
+                $category->getId(), 
+                $this->container->getParameter('max_jobs_on_homepage')
+            ));
+        }
+ 
         return array(
-            'entities' => $entities,
+            'categories' => $categories
         );
     }
     /**
@@ -110,7 +114,7 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MaxJobeetBundle:Job')->find($id);
+        $entity = $em->getRepository('MaxJobeetBundle:Job')->getActiveJob($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');

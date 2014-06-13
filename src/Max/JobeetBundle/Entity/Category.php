@@ -141,4 +141,14 @@ class Category
     {
         return $this->getName() ? $this->getName() : ""; 
     }
+
+    public function setActiveJobs($jobs)
+    {
+        $this->active_jobs = $jobs;
+    }
+ 
+    public function getActiveJobs()
+    {
+        return $this->active_jobs;
+    }
 }

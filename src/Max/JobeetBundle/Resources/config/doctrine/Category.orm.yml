@@ -1,5 +1,6 @@
 Max\JobeetBundle\Entity\Category:
     type: entity
+    repositoryClass: Max\JobeetBundle\Entity\Repository\CategoryRepository
     table: category
     id:
         id:

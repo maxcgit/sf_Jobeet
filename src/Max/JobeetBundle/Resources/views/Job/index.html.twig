@@ -1,22 +1,29 @@
 {% extends "MaxJobeetBundle::layout.html.twig" %}
 
 {% block content %}
+    
+    {% for category in categories %}
+        <h1>{{ category.name }}</h1>
+        <div class="feed">
+            <a href="#">Feed</a>
+        </div>
+        <table class="table table-striped">
+            <tbody>
+            {% for entity in category.activejobs %}
 
-    <table class="table table-striped">
-        <tbody>
-        {% for entity in entities %}
+                <tr>
+                    <td><strong>{{ entity.location }}</strong></td>
+                    <td class="position">
+                        <a href="{{ path('max_job_show', { 'id': entity.id, 'company': entity.companyslug, 'location': entity.locationslug, 'position': entity.positionslug }) }}">
+                            {{ entity.position }}
+                        </a>
+                    </td>
+                    <td class="company">{{ entity.company }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-            <tr>
-                <td><strong>{{ entity.location }}</strong></td>
-                <td class="position">
-                    <a href="{{ path('max_job_show', { 'id': entity.id, 'company': entity.companyslug, 'location': entity.locationslug, 'position': entity.positionslug }) }}">
-                        {{ entity.position }}
-                    </a>
-                </td>
-                <td class="company">{{ entity.company }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% endfor %}
 
 {% endblock %}

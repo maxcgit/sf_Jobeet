@@ -1,3 +1,4 @@
 max_home:
-    pattern:  /
+    path:  /
     defaults: { _controller: MaxJobeetBundle:Job:index }
+    methods:  [GET]

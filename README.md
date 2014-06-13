@@ -48,3 +48,11 @@ Routing
 console|info 
 ---|---
 `php bin/console router:debug` or `php bin/console r:de`|list all routs
+
+###Day6
+
+Models, EntityRepository
+
+console|info 
+---|---
+`php bin/console router:debug` or `php bin/console r:de`|list all routs
