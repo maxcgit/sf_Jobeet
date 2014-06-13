@@ -5,10 +5,11 @@
     <table class="table table-striped">
         <tbody>
         {% for entity in entities %}
+
             <tr>
                 <td><strong>{{ entity.location }}</strong></td>
                 <td class="position">
-                    <a href="{{ path('max_job_show', { 'id': entity.id }) }}">
+                    <a href="{{ path('max_job_show', { 'id': entity.id, 'company': entity.companyslug, 'location': entity.locationslug, 'position': entity.positionslug }) }}">
                         {{ entity.position }}
                     </a>
                 </td>

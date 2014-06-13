@@ -3,3 +3,5 @@ max_jobeet:
     type:     annotation
     prefix:   /
 
+max_jobeet2:
+    resource: "@MaxJobeetBundle/Resources/config/routing.yml"

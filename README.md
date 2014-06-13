@@ -40,3 +40,11 @@ View
 console|info 
 ---|---
 `php bin/console assetic:dump`|assetic dump to web folder
+
+###Day5
+
+Routing
+
+console|info 
+---|---
+`php bin/console router:debug` or `php bin/console r:de`|list all routs

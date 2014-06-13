@@ -13,7 +13,7 @@ use Max\JobeetBundle\Form\JobType;
 /**
  * Job controller.
  *
- * @Route("/max_job")
+ * @Route("/job")
  */
 class JobController extends Controller
 {
@@ -102,7 +102,7 @@ class JobController extends Controller
     /**
      * Finds and displays a Job entity.
      *
-     * @Route("/{id}", name="max_job_show")
+     * @Route("/{company}/{location}/{id}/{position}", requirements={"id"="\d+"}, name="max_job_show")
      * @Method("GET")
      * @Template()
      */
