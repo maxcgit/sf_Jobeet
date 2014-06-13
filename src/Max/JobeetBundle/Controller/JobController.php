@@ -26,13 +26,13 @@ class JobController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $job = $em->getRepository('MaxJobeetBundle:Job');
+        $jobs_on_page = $this->container->getParameter('max_jobs_on_homepage');
 
         $categories = $em->getRepository('MaxJobeetBundle:Category')->getWithJobs();
         foreach($categories as $category) {
-            $category->setActiveJobs($em->getRepository('MaxJobeetBundle:Job')->getActiveJobs(
-                $category->getId(), 
-                $this->container->getParameter('max_jobs_on_homepage')
-            ));
+            $category->setActiveJobs($job->getActiveJobs($category->getId(), $jobs_on_page));
+            $category->setMoreJobs($job->countActiveJobs($category->getId()) - $jobs_on_page);
         }
  
         return array(

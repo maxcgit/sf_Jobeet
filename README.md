@@ -53,6 +53,17 @@ console|info
 
 Models, EntityRepository
 
+###Day7
+
+Category, Paginate
+
 console|info 
 ---|---
-`php bin/console router:debug` or `php bin/console r:de`|list all routs
+
+Update DB
+`
+php bin/console doctrine:database:drop --force
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update --force
+php bin/console doctrine:fixtures:load
+`
