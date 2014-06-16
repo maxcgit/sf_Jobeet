@@ -12,19 +12,47 @@
         <h1>{{ category.name }}</h1>
     </div>
  
-    <table class="table table-striped">
-    	<tbody>
-        {% for entity in category.activejobs %}
-            <tr>
-                <td class="location">{{ entity.location }}</td>
-                <td class="position">
-                    <a href="{{ path('max_job_show', { 'id': entity.id, 'company': entity.companyslug, 'location': entity.locationslug, 'position': entity.positionslug }) }}">
-                        {{ entity.position }}
-                    </a>
-                </td>
-                <td class="company">{{ entity.company }}</td>
-            </tr>
-        {% endfor %}
-        <tbody>
-    </table>
+{{ include ('MaxJobeetBundle:parts:list.html.twig', {'items': category.activejobs}) }}
+
+    {% if last_page > 1 %}
+        <ul class="pagination">
+        	<li {{current_page == 1 ? 'class="disabled"':''}}>
+        	<a href="{{ path('max_category', { 'slug': category.slug, 'page': 1 }) }}">
+                &laquo;
+ 			</a>
+ 			</li>
+            <li  {{current_page == 1 ? 'class="disabled"':''}}>
+            <a href="{{ path('max_category', { 'slug': category.slug, 'page': previous_page }) }}">
+            	Previous	
+            </a>
+ 			</li>
+ 
+            {% for page in 1..last_page %}
+                <li {{page == current_page ? 'class="active"':''}}>
+                <a href="{{ path('max_category', { 'slug': category.slug, 'page': page }) }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+ 			<li {{current_page == last_page ? 'class="disabled"':''}}>
+            <a href="{{ path('max_category', { 'slug': category.slug, 'page': next_page }) }}">
+                Next
+            </a>
+            </li>
+ 			<li {{current_page == last_page ? 'class="disabled"':''}}>
+            <a href="{{ path('max_category', { 'slug': category.slug, 'page': last_page }) }}">
+                &raquo;
+            </a>
+            </li>
+
+        </ul>
+    {% endif %}
+ 
+    <div class="pagination_desc">
+        <strong>{{ total_jobs }}</strong> jobs in this category
+ 
+        {% if last_page > 1 %}
+            - page <strong>{{ current_page }}/{{ last_page }}</strong>
+        {% endif %}
+    </div>
+
 {% endblock %}

@@ -57,9 +57,6 @@ Models, EntityRepository
 
 Category, Paginate
 
-console|info 
----|---
-
 Update DB
 `
 php bin/console doctrine:database:drop --force
