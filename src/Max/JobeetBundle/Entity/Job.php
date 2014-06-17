@@ -4,6 +4,7 @@ namespace Max\JobeetBundle\Entity;
 
 use Max\JobeetBundle\Utils\Jobeet as Jobeet;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Job
@@ -17,11 +18,16 @@ class Job
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(callback="getTypeValues")
      */
     private $type;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $company;
 
@@ -32,31 +38,42 @@ class Job
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $url;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $position;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $location;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $description;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $how_to_apply;
 
     /**
      * @var string
+     *
      */
     private $token;
 
@@ -72,6 +89,9 @@ class Job
 
     /**
      * @var string
+     * 
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -94,6 +114,13 @@ class Job
      * @var \Max\JobeetBundle\Entity\Category
      */
     private $category;
+
+    /**
+     * @var string
+     * 
+     * @Assert\Image
+     */
+    public $file;
 
 
     /**
@@ -516,5 +543,109 @@ class Job
             $now = $this->getCreatedAt() ? $this->getCreatedAt()->format('U') : time();
             $this->expires_at = new \DateTime(date('Y-m-d H:i:s', $now + 86400 * 30));
         }
+    }
+
+    // choice field
+    public static function getTypes()
+    {
+        return array('full-time' => 'Full time', 'part-time' => 'Part time', 'freelance' => 'Freelance');
+    }
+ 
+    public static function getTypeValues()
+    {
+        return array_keys(self::getTypes());
+    }
+
+    // Upload file(image)
+    protected function getUploadDir()
+    {
+        return 'uploads/jobs';
+    }
+ 
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+ 
+    public function getWebPath()
+    {
+        return null === $this->logo ? null : $this->getUploadDir().'/'.$this->logo;
+    }
+ 
+    public function getAbsolutePath()
+    {
+        return null === $this->logo ? null : $this->getUploadRootDir().'/'.$this->logo;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function preUpload()
+    {
+         if (null !== $this->file) {
+             $this->logo = uniqid().'.'.$this->file->guessExtension();
+         }
+    }
+
+    /**
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+ 
+        // If there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->file->move($this->getUploadRootDir(), $this->logo);
+ 
+        unset($this->file);
+    }
+
+    /**
+     * @ORM\PostRemove
+     */
+    public function removeUpload()
+    {
+        $file = $this->getAbsolutePath();
+        if(file_exists($file)) {
+            if ($file) {
+                unlink($file);
+            }
+        }    
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setTokenValue()
+    {
+        if(!$this->getToken()) {
+            $this->token = sha1($this->getEmail().rand(11111, 99999));
+        }
+    }
+
+    public function isExpired()
+    {
+        return $this->getDaysBeforeExpires() < 0;
+    }
+ 
+    public function expiresSoon()
+    {
+        return $this->getDaysBeforeExpires() < 5;    
+    }
+ 
+    public function getDaysBeforeExpires()
+    {
+        return ceil(($this->getExpiresAt()->format('U') - time()) / 86400);
+    }
+
+    public function publish()
+    {
+        $this->setIsActivated(true);
     }
 }

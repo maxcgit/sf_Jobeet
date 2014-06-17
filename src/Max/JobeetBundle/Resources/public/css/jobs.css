@@ -1,3 +1,7 @@
 .company {
 	color: #d2813f;
 }
+
+.form_error {
+	color: #d9534f;
+}

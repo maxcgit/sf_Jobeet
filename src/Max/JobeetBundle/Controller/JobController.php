@@ -54,10 +54,19 @@ class JobController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            // $entity->file->move(__DIR__.'/../../../../web/uploads/jobs', $entity->file->getClientOriginalName());
+            // $entity->setLogo($entity->file->getClientOriginalName());
+
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('max_job_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('max_job_preview', array(
+                'company' => $entity->getCompanySlug(),
+                'location' => $entity->getLocationSlug(),
+                'token' => $entity->getToken(),
+                'position' => $entity->getPositionSlug()
+            )));
         }
 
         return array(
@@ -95,6 +104,7 @@ class JobController extends Controller
     public function newAction()
     {
         $entity = new Job();
+        $entity->setType('full-time');
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -120,7 +130,7 @@ class JobController extends Controller
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($entity->getToken());
 
         return array(
             'entity'      => $entity,
@@ -129,28 +139,97 @@ class JobController extends Controller
     }
 
     /**
+     * preview a Job 
+     *
+     * @Route("/{company}/{location}/{token}/{position}", requirements={"token"="\w+"}, name="max_job_preview")
+     * @Method("GET")
+     */
+    public function previewAction($token)
+    {
+        $em = $this->getDoctrine()->getManager();
+ 
+        $entity = $em->getRepository('MaxJobeetBundle:Job')->findOneByToken($token);
+ 
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Job entity.');
+        }
+ 
+        $deleteForm = $this->createDeleteForm($entity->getToken());
+        $publishForm = $this->createPublishForm($entity->getToken());
+ 
+        return $this->render('MaxJobeetBundle:Job:show.html.twig', array(
+            'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
+            'publish_form' => $publishForm->createView(),
+        ));
+    }
+
+
+    /**
+     * publish
+     *
+     * @Route("/{token}/publish", name="max_job_publish")
+     * @Method("POST")
+     */    
+    public function publishAction(Request $request, $token)
+    {
+        $form = $this->createPublishForm($token);
+        $form->handleRequest($request);
+     
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('MaxJobeetBundle:Job')->findOneByToken($token);
+     
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Job entity.');
+            }
+     
+            $entity->publish();
+            $em->persist($entity);
+            $em->flush();
+     
+            $this->get('session')->getFlashBag()->add('notice', 'Your job is now online for 30 days.');
+        }
+     
+        return $this->redirect($this->generateUrl('max_job_preview', array(
+            'company' => $entity->getCompanySlug(),
+            'location' => $entity->getLocationSlug(),
+            'token' => $entity->getToken(),
+            'position' => $entity->getPositionSlug()
+        )));
+    }
+     
+    private function createPublishForm($token)
+    {
+        return $this->createFormBuilder(array('token' => $token))
+            ->add('token', 'hidden')
+            ->getForm()
+        ;
+    }
+
+    /**
      * Displays a form to edit an existing Job entity.
      *
-     * @Route("/{id}/edit", name="max_job_edit")
+     * @Route("/{token}/edit", name="max_job_edit")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction($token)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MaxJobeetBundle:Job')->find($id);
+        $entity = $em->getRepository('MaxJobeetBundle:Job')->findOneByToken($token);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($token);
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -165,7 +244,7 @@ class JobController extends Controller
     private function createEditForm(Job $entity)
     {
         $form = $this->createForm(new JobType(), $entity, array(
-            'action' => $this->generateUrl('max_job_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('max_job_update', array('token' => $entity->getToken())),
             'method' => 'PUT',
         ));
 
@@ -176,28 +255,33 @@ class JobController extends Controller
     /**
      * Edits an existing Job entity.
      *
-     * @Route("/{id}", name="max_job_update")
+     * @Route("/{token}", name="max_job_update")
      * @Method("PUT")
      * @Template("MaxJobeetBundle:Job:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, $token)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MaxJobeetBundle:Job')->find($id);
+        $entity = $em->getRepository('MaxJobeetBundle:Job')->findOneByToken($token);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($token);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('max_job_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('max_job_preview', array(
+                'company' => $entity->getCompanySlug(),
+                'location' => $entity->getLocationSlug(),
+                'token' => $entity->getToken(),
+                'position' => $entity->getPositionSlug()
+            )));
         }
 
         return array(
@@ -209,17 +293,17 @@ class JobController extends Controller
     /**
      * Deletes a Job entity.
      *
-     * @Route("/{id}", name="max_job_delete")
+     * @Route("/{token}", name="max_job_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, $token)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($token);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MaxJobeetBundle:Job')->find($id);
+            $entity = $em->getRepository('MaxJobeetBundle:Job')->findOneByToken($token);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Job entity.');
@@ -239,10 +323,11 @@ class JobController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm($token)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('max_job_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('max_job_delete', array('token' => $token)))
+            ->add('token', 'hidden')
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

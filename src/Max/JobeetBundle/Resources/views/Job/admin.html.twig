@@ -1,0 +1,34 @@
+<div id="job_actions">
+    <h3>Admin</h3>
+    <ul class="btn-toolbar" role="toolbar">
+        {% if not job.isActivated %}
+            <li class="btn btn-default"><a href="{{ path('max_job_edit', { 'token': job.token }) }}">Edit</a></li>
+            <li class="btn btn-default">
+		        <form action="{{ path('max_job_publish', { 'token': job.token }) }}" method="post">
+		            {{ form_widget(publish_form) }}
+		            <button type="submit">Publish</button>
+		        </form>
+            </li>
+        {% endif %}
+        <li class="btn btn-default">
+                {{ form_widget(delete_form) }}
+        </li>
+        {% if job.isActivated %}
+            <li{% if job.expiresSoon %} class="expires_soon" {% endif %}>
+                {% if job.isExpired %}
+                    Expired
+                {% else %}
+                    Expires in <strong>{{ job.getDaysBeforeExpires }}</strong> days
+                {% endif %}
+ 
+                {% if job.expiresSoon %}
+                    - <a href="">Extend</a> for another 30 days
+                {% endif %}
+            </li>
+        {% else %}
+            <li   class="btn btn-default">
+                [Bookmark this <a href="{{ url('max_job_preview', { 'token': job.token, 'company': job.companyslug, 'location': job.locationslug, 'position': job.positionslug }) }}">URL</a> to manage this job in the future.]
+            </li>
+        {% endif %}
+    </ul>
+</div>

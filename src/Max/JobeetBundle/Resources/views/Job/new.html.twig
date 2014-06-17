@@ -1,16 +1,28 @@
 {% extends "MaxJobeetBundle::layout.html.twig" %}
 
+{% form_theme form _self %}
+{% block form_row %}
+{% spaceless %}
+	<div class="form-group">
+			<div class="col-sm-2">
+	        {{ form_label(form) }}
+	        </div>
+	        <div class="col-sm-4">
+	        <div class="form_error">
+	        	{{ form_errors(form) }}
+	        </div>
+	        {{ form_widget(form, {attr:{'class':'form-control'}}) }}
+	        </div>
+	</div>
+{% endspaceless %}
+{% endblock form_row %}
+
 {% block content %}
 
     <h1>Job creation</h1>
 
-    {{ form(form) }}
+    {{ form(form, {attr:{'role':'form', class:"form-horizontal", novalidate:'novalidate'}}) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('max_home') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
 {% endblock %}
+
+
