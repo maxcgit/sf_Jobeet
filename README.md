@@ -75,3 +75,7 @@ Unit test
 console|info 
 ---|---
 `phpunit -c .`|Test
+
+###Day9
+
+WebTestCase (function test)

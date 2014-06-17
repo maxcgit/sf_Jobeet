@@ -3,6 +3,7 @@
 {% block content %}
     
     {% for category in categories %}
+    <div class="category_{{ category.slug }}">
         <h1><a href="{{ path('max_category', { 'slug': category.slug }) }}">{{ category.name }}</a></h1>
         <div class="feed">
             <a href="#">Feed</a>
@@ -16,7 +17,7 @@
                 more...
             </div>
         {% endif %}
-
+    </div>
     {% endfor %}
 
 {% endblock %}
