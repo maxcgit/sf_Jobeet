@@ -1,0 +1,18 @@
+services:
+    max.jobeet.admin.category:
+        class: Max\JobeetBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Categories }
+        arguments:
+            - ~
+            - Max\JobeetBundle\Entity\Category
+            - 'MaxJobeetBundle:CategoryAdmin'
+
+    max.jobeet.admin.job:
+        class: Max\JobeetBundle\Admin\JobAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Jobs }
+        arguments:
+            - ~
+            - Max\JobeetBundle\Entity\Job
+            - 'MaxJobeetBundle:JobAdmin'

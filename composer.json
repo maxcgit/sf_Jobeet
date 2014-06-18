@@ -19,7 +19,9 @@
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "doctrine/data-fixtures" : "dev-master"
+        "doctrine/data-fixtures" : "dev-master",
+        "sonata-project/admin-bundle": "*",
+        "sonata-project/doctrine-orm-admin-bundle": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

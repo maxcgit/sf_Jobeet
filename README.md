@@ -58,6 +58,7 @@ Models, EntityRepository
 Category, Paginate
 
 Update DB
+
 `
 php bin/console doctrine:database:drop --force
 
@@ -87,3 +88,11 @@ Forms, Validations, Load file
 ###Day11
 
 Test Forms, Command
+
+###Day12
+
+Admin panel
+
+console|info 
+---|---
+`php composer.phar require sonata-project/admin-bundle`|Install sonata admin-bundle
