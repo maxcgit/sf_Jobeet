@@ -91,7 +91,7 @@ Test Forms, Command
 
 ###Day12
 
-Admin panel
+Admin panel (Sonata)
 
 console|info 
 ---|---
