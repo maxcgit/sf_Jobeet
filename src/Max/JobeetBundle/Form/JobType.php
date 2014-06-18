@@ -45,6 +45,6 @@ class JobType extends AbstractType
      */
     public function getName()
     {
-        return 'max_jobeetbundle_job';
+        return 'job';
     }
 }

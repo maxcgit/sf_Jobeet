@@ -11,10 +11,10 @@
             </li>
         {% endif %}
         <li class="btn btn-default">
-                {{ form_widget(delete_form) }}
+           {{ form(delete_form) }}
         </li>
         {% if job.isActivated %}
-            <li{% if job.expiresSoon %} class="expires_soon" {% endif %}>
+            <li class="btn btn-default">
                 {% if job.isExpired %}
                     Expired
                 {% else %}
@@ -22,7 +22,8 @@
                 {% endif %}
  
                 {% if job.expiresSoon %}
-                    - <a href="">Extend</a> for another 30 days
+                    {{ form(extend_form) }} 
+                    for another 30 days
                 {% endif %}
             </li>
         {% else %}
