@@ -110,3 +110,7 @@ XML, template format
 ###Day15
 
 API for Affiliates (Web services), Affiliates system
+
+###Day16
+
+Swift Mailer
