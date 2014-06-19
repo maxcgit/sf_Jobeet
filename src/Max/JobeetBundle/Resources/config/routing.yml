@@ -2,3 +2,9 @@ max_home:
     path:  /
     defaults: { _controller: MaxJobeetBundle:Job:index }
     methods:  [GET]
+
+login_check:
+    path:   /login_check
+
+logout:
+    path:   /logout

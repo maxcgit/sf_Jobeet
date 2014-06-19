@@ -15,18 +15,33 @@
             <div class="container">
                 
                 {% for flashMessage in app.session.flashbag.get('notice') %}
-                    <p class="bg-info">
+                    <p class="alert alert-info">
                        {{ flashMessage }}
                    </p>
                 {% endfor %}
 
                 {% for flashMessage in app.session.flashbag.get('error') %}
-                    <p class="bg-danger">
+                    <p class="alert alert-warning">
                        {{ flashMessage }}
                    </p>
                 {% endfor %}
 
+
+                <div id="job_history">
+                    Recent viewed jobs:
+                    <ol class="breadcrumb">
+                        {% for job in app.session.get('job_history') %}
+                            <li>
+                                <a href="{{ path('max_job_show', { 'id': job.id, 'company': job.companyslug, 'location': job.locationslug, 'position': job.positionslug }) }}">
+                                {{ job.position }} - {{ job.company }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+
                 {% block content %}{% endblock %}
+
             </div>
 
             {% block footer %}

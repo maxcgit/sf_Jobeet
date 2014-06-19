@@ -96,3 +96,7 @@ Admin panel (Sonata)
 console|info 
 ---|---
 `php composer.phar require sonata-project/admin-bundle`|Install sonata admin-bundle
+
+###Day13
+
+Security, Session
