@@ -36,7 +36,9 @@ class JobController extends Controller
         }
  
         return array(
-            'categories' => $categories
+            'categories' => $categories,
+            'lastUpdated' => $em->getRepository('MaxJobeetBundle:Job')->getLatestPost()->getCreatedAt()->format(DATE_ATOM),
+            'feedId' => sha1($this->get('router')->generate('max_home', array('_format'=> 'atom'), true)),
         );
     }
     /**

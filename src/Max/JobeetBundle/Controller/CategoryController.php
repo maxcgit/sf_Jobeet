@@ -44,7 +44,8 @@ class CategoryController extends Controller
 	        'previous_page' => $previous_page,
 	        'current_page' => $page,
 	        'next_page' => $next_page,
-	        'total_jobs' => $total_jobs
+	        'total_jobs' => $total_jobs,
+	        'feedId' => sha1($this->get('router')->generate('max_category', array('slug' =>  $category->getSlug(), '_format' => 'atom'), true)),
 	    );
 	}
 
