@@ -16,3 +16,12 @@ services:
             - ~
             - Max\JobeetBundle\Entity\Job
             - 'MaxJobeetBundle:JobAdmin'
+
+    max.jobeet.admin.affiliate:
+        class: Max\JobeetBundle\Admin\AffiliateAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Affiliates }
+        arguments:
+            - ~
+            - Max\JobeetBundle\Entity\Affiliate
+            - 'MaxJobeetBundle:AffiliateAdmin'

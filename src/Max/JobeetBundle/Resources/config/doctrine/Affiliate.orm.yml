@@ -1,5 +1,6 @@
 Max\JobeetBundle\Entity\Affiliate:
     type: entity
+    repositoryClass: Max\JobeetBundle\Entity\Repository\AffiliateRepository
     table: affiliate
     id:
         id:
@@ -33,4 +34,4 @@ Max\JobeetBundle\Entity\Affiliate:
                     category_id:
                         referencedColumnName: id
     lifecycleCallbacks:
-        prePersist: [ setCreatedAtValue ]
+        prePersist: [ setCreatedAtValue, setTokenValue ]

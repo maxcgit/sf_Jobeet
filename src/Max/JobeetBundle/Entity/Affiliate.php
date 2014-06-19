@@ -3,9 +3,12 @@
 namespace Max\JobeetBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Affiliate
+ * @UniqueEntity("email")
  */
 class Affiliate
 {
@@ -16,12 +19,15 @@ class Affiliate
 
     /**
      * @var string
+     * @Assert\Url
      */
     private $url;
 
     /**
      * @var string
-     */
+     * @Assert\NotBlank
+     * @Assert\Email
+    */
     private $email;
 
     /**
@@ -215,5 +221,34 @@ class Affiliate
     public function setCreatedAtValue()
     {
         $this->created_at = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setTokenValue()
+    {
+        if(!$this->getToken()) {
+            $token = sha1($this->getEmail().rand(11111, 99999));
+            $this->token = $token;
+        }
+    }
+
+    public function activate()
+    {
+        if(!$this->getIsActive()) {
+            $this->setIsActive(true);
+        }
+ 
+        return $this->is_active;
+    }
+ 
+    public function deactivate()
+    {
+        if($this->getIsActive()) {
+            $this->setIsActive(false);
+        }
+ 
+        return $this->is_active;
     }
 }

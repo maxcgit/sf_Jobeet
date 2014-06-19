@@ -101,6 +101,12 @@ console|info
 
 Security, Session
 
+ `bin/console max:jobeet:users admin 123`
+
 ###Day14
 
 XML, template format
+
+###Day15
+
+API for Affiliates (Web services), Affiliates system
