@@ -404,4 +404,25 @@ class JobController extends Controller
             ->add('submit', 'submit', array('label' => 'Extend'))
             ->getForm();
     }
+
+    /**
+     * search a Job 
+     *
+     * @Route("/search", name="max_job_search")
+     * @Method("GET")
+     * @Template
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $this->getRequest()->get('query');
+ 
+        if(!$query) {
+            return $this->redirect($this->generateUrl('max_home'));
+        }
+ 
+        $jobs = $em->getRepository('MaxJobeetBundle:Job')->getForLuceneQuery($query);
+ 
+        return array('items' => $jobs);
+    }
 }

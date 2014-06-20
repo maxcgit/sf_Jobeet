@@ -1,0 +1,7 @@
+{% extends 'MaxJobeetBundle::layout.html.twig' %}
+ 
+{% block content %}
+    <div id="jobs">
+        {% include 'MaxJobeetBundle:parts:list.html.twig' with {'items': items} %}
+    </div>
+{% endblock %}

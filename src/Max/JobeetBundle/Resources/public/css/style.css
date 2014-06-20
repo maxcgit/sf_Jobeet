@@ -7,3 +7,7 @@ body {
   padding: 10px 0;
   margin-top: 10px;
 }
+
+.nav-search{
+	width: 500px !important;
+}

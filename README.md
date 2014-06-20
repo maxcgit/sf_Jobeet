@@ -1,8 +1,10 @@
 # Jobeet Tutorial with Symfony2 
 
 http://www.ens.ro/2012/03/21/jobeet-tutorial-with-symfony2/
+http://www.intelligentbee.com/blog/2013/09/09/symfony2-jobeet-day-19-internationalization-and-localization/
 
 http://symfony.in.ua/symfony2-jobeet-tutorial.html
+
 
 ###Day1
 
@@ -114,3 +116,7 @@ API for Affiliates (Web services), Affiliates system
 ###Day16
 
 Swift Mailer
+
+###Day17
+
+Search: Zend Lucene
