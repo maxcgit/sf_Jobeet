@@ -124,3 +124,10 @@ Search: Zend Lucene
 ###Day18
 
 AJAX - jQuery.load
+
+###Day19
+
+Translations(i18n)
+$request->setLocale('fr');
+Making the Locale Sticky during a User's Session
+http://symfony.com/doc/current/cookbook/session/locale_sticky_session.html

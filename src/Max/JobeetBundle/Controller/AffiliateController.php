@@ -11,6 +11,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  
+
+/**
+ * Job controller.
+ *
+ * @Route("/{_locale}/aff", requirements={"_locale": "uk|ru|en"})
+ */
 class AffiliateController extends Controller
 {
     /**

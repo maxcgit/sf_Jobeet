@@ -24,7 +24,7 @@ class JobController extends Controller
      *
      * @Template
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $job = $em->getRepository('MaxJobeetBundle:Job');
@@ -36,6 +36,7 @@ class JobController extends Controller
             $category->setMoreJobs($job->countActiveJobs($category->getId()) - $jobs_on_page);
         }
  
+        //$request->setLocale('ru');
         return array(
             'categories' => $categories,
             'lastUpdated' => $em->getRepository('MaxJobeetBundle:Job')->getLatestPost()->getCreatedAt()->format(DATE_ATOM),

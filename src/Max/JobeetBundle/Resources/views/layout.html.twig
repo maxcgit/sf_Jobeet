@@ -58,6 +58,17 @@
 		                   <li class="text-muted">2012-{{"now"|date('Y')}} TM</li>
 		                   <li class="text-muted">powered by <a href="http://www.symfony.com/">Symfony</a></li>
                         </ul>
+                      <form action="{{ path('max_changeLanguage') }}" method="get">
+                        <label>{% trans %}Language{% endtrans %}</label>
+                            <select name="language">
+                            
+                                <option value="uk" {% if app.request.get('_locale') == 'uk' %}selected="selected"{% endif %}>Українська</option>
+                                <option value="ru" {% if app.request.get('_locale') == 'ru' %}selected="selected"{% endif %}>Русский</option>
+                                <option value="en" {% if app.request.get('_locale') == 'en' %}selected="selected"{% endif %}>English</option>
+                                
+                            </select>
+                        <input type="submit" value="Ok">
+                    </form>
                     </div>
                 </div>
             {% endblock %}

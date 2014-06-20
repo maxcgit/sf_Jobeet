@@ -33,4 +33,13 @@ class DefaultController extends Controller
             'error'         => $error,
         );
     }
+
+    /**
+     * @Route("/change_language", name="max_changeLanguage")
+     */
+    public function changeLanguageAction()
+    {
+        $language = $this->getRequest()->get('language');
+        return $this->redirect($this->generateUrl('max_home', array('_locale' => $language)));
+    }
 }
