@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Max\JobeetBundle\Entity\Job;
 use Max\JobeetBundle\Form\JobType;
 
@@ -409,7 +410,7 @@ class JobController extends Controller
      * search a Job 
      *
      * @Route("/search", name="max_job_search")
-     * @Method("GET")
+     * @Method({"GET","POST"})
      * @Template
      */
     public function searchAction(Request $request)
@@ -418,11 +419,24 @@ class JobController extends Controller
         $query = $this->getRequest()->get('query');
  
         if(!$query) {
-            return $this->redirect($this->generateUrl('max_home'));
+            if(!$request->isXmlHttpRequest()) {
+                return $this->redirect($this->generateUrl('max_home'));
+            } else {
+                return new Response('No results.');
+            }
         }
  
         $jobs = $em->getRepository('MaxJobeetBundle:Job')->getForLuceneQuery($query);
  
+        if($request->isXmlHttpRequest()) {
+ 
+            if('*' == $query || !$jobs || $query == '') {
+                return new Response('No results.');
+            }
+
+            return $this->render('MaxJobeetBundle:parts:list.html.twig', array('items' => $jobs));
+        }
+
         return array('items' => $jobs);
     }
 }

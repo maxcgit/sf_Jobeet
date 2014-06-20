@@ -1,7 +1,7 @@
 {% extends "MaxJobeetBundle::layout.html.twig" %}
 
 {% block content %}
-    
+    <div id="jobs">
     {% for category in categories %}
     <div class="category_{{ category.slug }}">
         <h1><a href="{{ path('max_category', { 'slug': category.slug }) }}">{{ category.name }}</a></h1>
@@ -19,5 +19,5 @@
         {% endif %}
     </div>
     {% endfor %}
-
+    </div>
 {% endblock %}

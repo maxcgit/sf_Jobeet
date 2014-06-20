@@ -120,3 +120,7 @@ Swift Mailer
 ###Day17
 
 Search: Zend Lucene
+
+###Day18
+
+AJAX - jQuery.load
